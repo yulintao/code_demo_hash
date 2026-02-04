@@ -27,6 +27,11 @@ static uint64_t bit_hash_mix64(uint64_t value) {
     return value;
 }
 
+// 对外提供的 hash 计算函数
+uint64_t bit_hash_compute(uint64_t key) {
+    return bit_hash_mix64(key);
+}
+
 // 计算探测步长，保证为奇数
 static uint32_t bit_hash_step(uint64_t hash) {
     uint32_t step = (uint32_t)((hash >> 32U) ^ hash);
@@ -198,7 +203,7 @@ int bit_hash_insert(bit_hash_table_t *table, uint64_t key, uint64_t value) {
         return -1;
     }
 
-    uint64_t hash = bit_hash_mix64(key);
+    uint64_t hash = bit_hash_compute(key);
     uint32_t bucket = (uint32_t)hash & table->mask;
     uint32_t step = bit_hash_step(hash);
 
@@ -262,7 +267,7 @@ int bit_hash_delete(bit_hash_table_t *table, uint64_t key) {
         return -1;
     }
 
-    uint64_t hash = bit_hash_mix64(key);
+    uint64_t hash = bit_hash_compute(key);
     uint32_t bucket = (uint32_t)hash & table->mask;
     uint32_t step = bit_hash_step(hash);
     for (uint32_t i = 0; i < table->size; ++i) {
@@ -290,7 +295,7 @@ int64_t bit_hash_search(bit_hash_table_t *table, uint64_t key) {
         return -1;
     }
 
-    uint64_t hash = bit_hash_mix64(key);
+    uint64_t hash = bit_hash_compute(key);
     uint32_t bucket = (uint32_t)hash & table->mask;
     uint32_t step = bit_hash_step(hash);
     for (uint32_t i = 0; i < table->size; ++i) {

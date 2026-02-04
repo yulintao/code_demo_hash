@@ -44,6 +44,8 @@ int bit_hash_free(bit_hash_resource_t *resource, int32_t offset);
 int bit_hash_init(bit_hash_table_t *table, uint32_t size, bit_hash_resource_t *resource);
 // 销毁哈希表
 void bit_hash_destroy(bit_hash_table_t *table);
+// 计算 hash 值（用于降低冲突概率）
+uint64_t bit_hash_compute(uint64_t key);
 // 插入或更新键值对
 int bit_hash_insert(bit_hash_table_t *table, uint64_t key, uint64_t value);
 // 删除键
